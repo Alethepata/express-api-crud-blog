@@ -8,6 +8,8 @@ const homeRouter = require('./routers/home.js');
 
 app.use(express.static('public'));
 
+app.use(express.urlencoded({extended: true}));
+
 app.use('/', homeRouter);
 
 app.use('/posts', postsRouter);

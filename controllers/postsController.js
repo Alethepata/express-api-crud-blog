@@ -83,17 +83,13 @@ const show = (req, res) => {
     })
 };
 
-const create = (req, res) => { 
+const store = (req, res) => { 
     res.format({
         html: () => {
-            let html;
-            html += "<h1>Creazione nuovo post</h1>"
-            res.send(html);
+            res.redirect(200, '/posts');
         },
         json: () => { 
-            res.status(406).json({
-                error: 'Not Accetable',
-            });
+            res.json(req.body);
         }
     })
 }
@@ -112,6 +108,6 @@ const download = (req, res) => {
 module.exports = {
     index,
     show,
-    create,
+    store,
     download 
 }
