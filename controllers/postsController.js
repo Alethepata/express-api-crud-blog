@@ -1,5 +1,5 @@
 const path = require('path');
-const posts = require('../db/posts.js');
+const posts = require('../db/posts.json');
 
 const index = (req, res) => {
     res.format({
