@@ -1,23 +1,31 @@
-const posts = require('../db/posts.js');
-
-const slugNotFound = (req, res, next) => { 
-    const slugs = []
-    posts.forEach(post => {
-        slugs.push(post.slug)
-    });
-    if (!slugs.includes(req.params.slug)) {
-        res.format({
-            json: () => { 
-                res.status(404).json({
-                    status: 404,
-                    message: 'Post non trovato'
-                });
-            }
-        })
-    }
-    next();
+const notFound = (req, res, next) => {
+    res.format({
+        html: () => {
+            res.status(404).send('<h1>Pagina non trovata</h1>')
+        },
+        json: () => {
+            res.status(404).json({
+            status: 404,
+            error: 'Pagina non trovata',
+            })
+        }
+    })
 }
-
+const serverError = (err, req, res, next) => {
+    res.format({
+        html: () => {
+            res.status(500).send(`<h1>${err.message}</h1>`)
+        },
+        json: () => {
+            res.status(500).json({
+            status: 500,
+            error: err.message,
+            })
+        }
+    })
+}
 module.exports = {
-    slugNotFound,
+    notFound,
+    serverError
 }
+

@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { index, show, store, download, destroy } = require('../controllers/postsController');
 
-const { slugNotFound } = require('../middleware/errors.js')
+const slugNotFound = require('../middleware/slugNotFound.js')
 
 
 router.get('/', index);
