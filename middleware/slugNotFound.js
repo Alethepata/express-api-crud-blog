@@ -1,9 +1,6 @@
 module.exports = (req, res, next) => { 
-    const posts = require('../db/posts.js');
-    const slugs = []
-    posts.forEach(post => {
-        slugs.push(post.slug)
-    });
+    const posts = require('../db/posts.json');
+    const slugs = posts.map(post => post.slug)
     if (!slugs.includes(req.params.slug)) {
         res.format({
             json: () => { 
