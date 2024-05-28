@@ -1,5 +1,29 @@
 const path = require('path');
 const posts = require('../db/posts.json');
+const fs = require('fs');
+
+const update = newPost => {
+    const file = path.join(__dirname, '/db/posts.json');
+    fs.writeFileSync(file, JSON.stringify(newPost));
+    posts = newPost;
+}
+
+const deleteFile = fileName => {
+    const file = path.join(__dirname, '/public', fileName);
+    fs.unlinkSync(file);
+}
+
+const createSlug = title => {
+    const baseSlug = title.replace(' ', '-').toLowerCase().replace('/', '');
+    const slugs = posts.map(post => post.slug);
+    let counter = 1;
+    let slug = baseSlug;
+    while(slugs.includes(slug)){
+        slug = `${baseSlug}-${counter}`;
+        counter ++;
+    }
+    return slug;
+}
 
 const index = (req, res) => {
     res.format({
@@ -79,12 +103,29 @@ const show = (req, res) => {
             }
         }
     })
-};
-
+}
 const store = (req, res) => { 
     res.format({
         html: () => {
-            res.redirect(200, '/posts');
+            const { title, content, tags } = req.body;
+            if (!title || !content || !tags) {
+                req.file?.filename && deleteFile(req.file.filename);
+                return res.status(400).send('Manca qualcosa');
+            }else if(!req.file || !req.file.mimetype.includes('image')){
+                req.file?.filename && deleteFile(req.file.filename);
+                return res.status(400).send('Manca l\'immagine');
+            }
+            const slug = createSlug(title);
+
+            const newPost = {
+                title,
+                content,
+                tags,
+                image: req.file.filename,
+                slug
+
+            }
+            update([...posts, newPost])
         },
         json: () => { 
             res.json(req.body);

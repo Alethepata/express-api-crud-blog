@@ -3,12 +3,15 @@ const router = express.Router();
 
 const { index, show, store, download, destroy } = require('../controllers/postsController');
 
-const slugNotFound = require('../middleware/slugNotFound.js')
+const slugNotFound = require('../middleware/slugNotFound.js');
+
+const multer = require("multer");
+const uploader = multer({dest: "public/imgs/posts"});
 
 
 router.get('/', index);
 
-router.post('/', store);
+router.post('/', uploader.single("image"), store);
 
 router.get('/:slug', show);
 
