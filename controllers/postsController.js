@@ -74,7 +74,7 @@ const show = (req, res) => {
             } else {
                 res.status(404).json({
                     error: 'Not Found',
-                    describe: `Non esiste una pizza ${slug}`
+                    describe: `Non esiste una post ${slug}`
                 });
             }
         }
