@@ -1,8 +1,6 @@
 const path = require('path');
 const posts = require('../db/posts.js');
 
-
-
 const index = (req, res) => {
     res.format({
         html: () => {
@@ -105,9 +103,24 @@ const download = (req, res) => {
     }
 }
 
+const destroy = (req, res) => { 
+    res.format({
+        html: () => {
+            res.redirect(200, '/posts');
+        },
+        json: () => { 
+            res.status(200).json({
+                status: 200,
+                message: 'Post cancellato con sucesso'
+            });
+        }
+    })
+}
+
 module.exports = {
     index,
     show,
     store,
-    download 
+    download,
+    destroy
 }
